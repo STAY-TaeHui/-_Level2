@@ -63,14 +63,14 @@ public class Solution
             {
                 int end = Math.min(i + split, s.length()); // end : substring에 들어갈 end Index
 
-                String substring;
-                String eq = null;
+                String substring; // 비교 할 앞 문자열
+                String eq = null; // 비교 할 뒤 문자열
 
                 substring = s.substring(i, end);
 
                 if (end + split <= s.length())
                 {
-                    eq = s.substring(i + split, end + split);
+                    eq = s.substring(end, end + split);
                 }
 
                 if (substring.equals(eq))
