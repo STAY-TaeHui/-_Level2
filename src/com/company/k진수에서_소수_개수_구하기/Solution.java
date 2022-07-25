@@ -24,60 +24,40 @@ P처럼 소수 양쪽에 아무것도 없는 경우
 public class Solution
 {
     public int solution(int n, int k) {
-        int answer = -1;
+        int answer = 0;
 
-        String[] regList = {"0([2-9]|[1-9]{2,})0","^([2-9]|[1-9]{2,})0","0([2-9]|[1-9]{2,})$","^([1-9]{2,}|[2-9])$"};
-
-        //n : 437674
-        //k : 3
-//      --> 211 0 2 0 1 0 1 0 11
         StringBuilder temp = new StringBuilder();
-        while(n >= k){
-
+        //StringBuilder 가 String 을 사용하는 것 보다 빠름.
+        while(n !=0){
             temp.insert(0,n % k);
             n=n/k;
-
-        }
-        if(n>0){
-            temp.insert(0,n);
         }
 
-        List<String> resultList = splitReg(regList, temp.toString());
+        String[] splitTemp = temp.toString().split("0");
 
-        return getPrimeCount(resultList);
+        for(String s : splitTemp){
+            //s가 비어있거나 1인경우 생략
+            if(s.equals("") || s.equals("1")){
+                continue;
+            }
+            answer = getPrimeCount(s) ? (answer + 1) : answer;
+        }
+        return answer;
     }
-
-    private int getPrimeCount(List<String> resultList)
+    private boolean getPrimeCount(String primeNum)
     {
-        int count=0;
-        for(String s  : resultList){
-            boolean check = true;
-            long isPrime= Long.parseLong(s);
+            long isPrime= Long.parseLong(primeNum);
+
+            //값이 2인경우 소수이기 때문에 바로 true 반환.
+            if(isPrime==2) return true;
+
+            //에라토스테네스의 체 -> 소수는 k의 제곱근 까지만 체크하면 됨.
             for(int i=2; i<Math.sqrt(isPrime)+1; i++){
                 if (isPrime % i == 0)
                 {
-                    check=false;
-                    break;
+                   return false;
                 }
             }
-            if(check){
-                count++;
-            }
-
-        }
-        return count;
-    }
-
-    private List<String> splitReg(String[] regList, String numToString){
-        List<String> resultList = new ArrayList<>();
-        for(String strReg : regList){
-            Pattern p = Pattern.compile(strReg);
-            Matcher m = p.matcher(numToString);
-            while(m.find()){
-
-                resultList.add(m.group().replaceAll("0",""));
-            }
-        }
-        return resultList;
+        return true;
     }
 }
