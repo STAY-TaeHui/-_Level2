@@ -17,6 +17,9 @@ import java.util.*;
 
 public class Solution
 {
+    public static void main(String[] args) {
+        solution(new String[]{"XYZ", "XWY", "WXA"},new int[]{2,3,4});
+    }
         // 12. combi 메소드에서 map에 접근하기 위해 전역변수로 선언.
         static HashMap<String,Integer> map;
         // 13. 조합을 구하는 메소드 (한 사람의 메뉴구성, 조합을 구할 StringBuilder, 조합을 위한 idx, 코스요리 개수에 따른 종료조건을 위한 cnt와 n)
@@ -39,7 +42,7 @@ public class Solution
             }
         }
 
-        public ArrayList<String> solution(String[] orders, int[] course) {
+        public static ArrayList<String> solution(String[] orders, int[] course) {
             ArrayList<String> answer = new ArrayList<>();
 
             // 1. 각 문자열을 오름차순 정렬.
