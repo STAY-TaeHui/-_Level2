@@ -3,8 +3,10 @@ package com.company.메뉴리뉴얼;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Solution2 {
+    static HashMap<String,Integer> map;
     public static void main(String[] args) {
         solution(new String[]{"XYZ", "XWY", "WXA"},new int[]{2,3,4});
     }
@@ -22,11 +24,24 @@ public class Solution2 {
 
             for (int j = 0; j < orders.length; j++) {
                 if (course[i] <= orders[j].length()) {
-                    combi(orders[i], )
+                    combi(orders[i], sb,  0, course[i],0);
 
                 }
             }
         }
         return answer;
+    }
+
+    private static void combi(String order, StringBuilder sb, int idx, int course, int count) {
+        if(course == count){
+            map.put(sb.toString(), map.getOrDefault(sb.toString(),0)+1);
+            return;
+        }
+
+        for(int i=idx; i<order.length(); i++){
+            sb.append(order.charAt(i));
+            combi(order,sb,idx+1, course, count+1);
+        }
+
     }
 }
