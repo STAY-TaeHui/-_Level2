@@ -11,9 +11,21 @@ class Solution
     {
         int answer = 0;
 
-        // [실행] 버튼을 누르면 출력 값을 볼 수 있습니다.
-        System.out.println("Hello Java");
-
+        while (true)
+        {
+            //대진이 끝날 때 마다 수를 줄여 나간다.
+            //1,2 -> 1
+            //3,4 -> 2
+            //5,6 -> 3
+            //7,8 -> 4
+            a = a/2 + a%2;
+            b= b/2 + b%2;
+            answer++;
+            if (a == b)
+            {
+                break;
+            }
+        }
         return answer;
     }
 }
