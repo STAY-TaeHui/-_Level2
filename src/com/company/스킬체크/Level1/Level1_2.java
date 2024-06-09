@@ -1,4 +1,4 @@
-package com.company.스킬체크;
+package com.company.스킬체크.Level1;
 
 import java.util.Arrays;
 import java.util.Stack;

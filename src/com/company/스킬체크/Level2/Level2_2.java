@@ -1,4 +1,4 @@
-package com.company.스킬체크;
+package com.company.스킬체크.Level2;
 
 import java.util.ArrayList;
 import java.util.List;
