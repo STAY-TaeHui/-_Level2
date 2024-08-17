@@ -12,17 +12,6 @@ package com.company.다음큰숫자;
 * */
 public class Solution
 {
-    /*
-    * 1001110(78) -> 1010000
-    * 1001111 79
-    * 1010000
-    * 1010001
-    * 1010010
-    * 1010011
-    * 1010011(83)
-    * 1010101
-    * */
-
     public int solution(int n) {
 
         int originCountOne = countOne(Integer.toBinaryString(n));
@@ -40,7 +29,17 @@ public class Solution
 
     private int countOne(String binaryString)
     {
-        return (int) binaryString.chars().filter(c->c=='1').count();
+        char[] charArray = binaryString.toCharArray();
+
+        int count = 0;
+        for(char c : charArray)
+        {
+            if (c == '1')
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
     public static void main(String[] args)
