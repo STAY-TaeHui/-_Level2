@@ -14,30 +14,22 @@ public class Solution
 {
     public int solution(int n) {
 
-        int originCountOne = countOne(Integer.toBinaryString(n));
+        int onesCount = countOne(n); // 초기 1의 개수
 
-        while(true)
-        {
+        while (true) {
             n++;
-            int countOne = countOne(Integer.toBinaryString(n));
-            if(originCountOne == countOne)
-            {
-              return n;
+            if (countOne(n) == onesCount) {
+                return n;
             }
         }
     }
 
-    private int countOne(String binaryString)
+    private int countOne(int num)
     {
-        char[] charArray = binaryString.toCharArray();
-
         int count = 0;
-        for(char c : charArray)
-        {
-            if (c == '1')
-            {
-                count++;
-            }
+        while (num != 0) {
+            count += num & 1;
+            num >>= 1;
         }
         return count;
     }
