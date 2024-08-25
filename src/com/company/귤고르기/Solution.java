@@ -1,6 +1,6 @@
 package com.company.귤고르기;
 
-import java.util.Arrays;
+import java.util.*;
 
 /*
 경화는 과수원에서 귤을 수확했습니다. 경화는 수확한 귤 중 'k'개를 골라 상자 하나에 담아 판매하려고 합니다.
@@ -27,38 +27,29 @@ public class Solution {
     */
     public static int solution(int k, int[] tangerine) {
 
-//        런타임 에러 발생 -> 귤의 크기가 배열 크기보다 클수도 있음 -> max값으로 배열 크기 정해줘야 할듯.
-//        int[] tangerineCount = new int[tangerine.length];
+        Map<Integer, Integer> tangerineCount = new HashMap<>();
 
-        int max = 0;
         for (int t : tangerine) {
-            if (t > max) {
-                max = t;
+            tangerineCount.put(t, tangerineCount.getOrDefault(t,0) +1);
+        }
+        List<Integer> counts = new ArrayList<>(tangerineCount.values());//1,2,2,1,2
+        counts.sort(Collections.reverseOrder());//2,2,2,1,1
+
+        int count = 0, answer = 0;
+        for (int c : counts) {
+            count += c;
+            answer++;
+            System.out.println(count);
+            if (count >= k) {
+                return answer;
             }
         }
 
-        int[] tangerineCount = new int[(max > tangerine.length ? max : tangerine.length)+1];
-
-        for (int t : tangerine) {
-            tangerineCount[t]++;
-        }
-
-        Arrays.sort(tangerineCount);
-
-        int count = 0;
-        for (int i= tangerineCount.length-1, num=1; i>=0; i--, num++) {
-            count += tangerineCount[i];
-
-            if (k <= count) {
-                System.out.println(num);
-                return num;
-            }
-
-        }
         return -1;
     }
 
     public static void main(String[] args) {
-        Solution.solution(1, new int[]{1});
+//        Solution.solution(1, new int[]{1});
+        Solution.solution(6, new int[]{1, 3, 2, 5, 4, 5, 2, 3});
     }
 }
