@@ -6,9 +6,38 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
 //        [1, 4, 4, 2]	[6, 3, 8, 2]	59	2
+//        [1, 5, 3]	[2, 4, 7]	30	3
+        /*
+        * 5/2 = 2 => midLevel
+        * 1 - 2;
+        * 5 : 5-2 * 6 + 4 = 22;
+        * 3 : 3-2 * 11 + 7 = 21;
+        * 오른쪽으로 이동 -> 2-5 의 중간 : 7/2 = 3
+        * 1: 2;
+        * 5 : 5-3 * 6 +4 = 16;
+        * 3 : 7;
+        * 25;
+        * 4일때는?
+        * 1: 2;
+        * 5 : 5-4 * 6 + 4 = 10;
+        * 3 : 7;
+        * 19;
+        * */
+        //[1, 1, 1, 5, 1]   [1, 1, 1, 1, 1]  100
+        /*
+        2부터
+        1 : 1;
+        2 : 1;
+        3 : 1;
+        4 : 5-1 * 1 + 1 = 5;
+        5 : 1;
+        * */
 //        [1, 328, 467, 209, 54]	[2, 7, 1, 4, 3]	1723	294
+//        	[1, 99999, 100000, 99995], [9999, 9001, 9999, 9001], 3456789012
 //        Solution.solution(new int[]{1,4,4,2}, new int[]{6,3,8,2}, 59);
-        Solution.solution(new int[]{1, 328, 467, 209, 54}, new int[]{2, 7, 1, 4, 3}, 1723);
+//        Solution.solution(new int[]{1, 328, 467, 209, 54}, new int[]{2, 7, 1, 4, 3}, 1723);
+
+        Solution.solution(new int[]{1, 99999, 100000, 99995}, new int[]{9999, 9001, 9999, 9001}, 3456789012L);
     }
 }
 
@@ -19,40 +48,56 @@ class Solution {
         //time_prev : 이전 소요 시간
         //level : 숙련도
 
-        //제한시간 limit내에 퍼즐을 모두 해결하기 위한 level의 최솟값
-        int forCount = 0;
-        long minLevel = 0;
-        int halfLevel = Arrays.stream(diffs)
-                .max()
-                .getAsInt();
+        Btree btree = new Btree(
+            Arrays.stream(diffs).max().getAsInt(),
+            1
+        );
 
-        do {
-            halfLevel = halfLevel/2;
-            int totalTime = 0;
 
-            for (int i = 0; i < diffs.length; i++) {
-                if (diffs[i] > halfLevel) {
-                    totalTime = totalTime + calculateSpendTime(diffs[i], times[i], times[i-1], halfLevel);
-                } else {
-                    totalTime = totalTime + times[i];
-                }
+        int result = 0;
+        while(btree.min <= btree.max) {
+            long totalTime = times[0];
 
-                if (limit < totalTime) {//글러먹었다. limit를 넘김
-                    //level 다시 반으로 줄이고 처음부터 다시 계산
-                    if (halfLevel == 1) {
-                        return (int) minLevel;
-                    }
-                    i=0;
-                    totalTime = 0;
-                    halfLevel = halfLevel+halfLevel/2;
+            for (int i = 1; i < diffs.length; i++) {
+                if (diffs[i] > btree.mid) {
+                    totalTime += calculateSpendTime(diffs[i], times[i], times[i - 1], btree.mid);
+                } else
+                    totalTime += times[i];
+
+                if (limit < totalTime) {
+                    btree.moveLevelToRight();
+                    break;// 이후는 숙련도가 모자르기 때문에 볼필요 없음.
                 }
             }
-            minLevel = halfLevel;
-            forCount++;
-        }while(halfLevel!=1);//계속 반갈죽해서 1이 될때까지 반복
 
-        System.out.println(minLevel+"!!!!!!!");
-        return (int) minLevel;
+            if(limit >= totalTime) {
+                result = btree.mid;
+                btree.moveLevelToLeft();
+            }
+        }
+        System.out.println(result);
+        return result;
+    }
+
+    private static class Btree {
+        private int max;
+        private int min;
+        private int mid;
+
+        public Btree(int max, int min) {
+            this.max = max;
+            this.min = min;
+            this.mid = max/2;
+        }
+
+        public void moveLevelToRight() {
+            this.min = mid + 1;
+            this.mid = (min + max) / 2;
+        }
+        public void moveLevelToLeft() {
+            this.max = mid - 1;
+            this.mid = (min + max) / 2;
+        }
     }
 
     private static int calculateSpendTime(int diff, int time_cur, int time_prev, int level) {
